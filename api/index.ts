@@ -1,7 +1,20 @@
-import app from '../src/index';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Export the Express app as a serverless function
-export default app;
+export default function handler(req: VercelRequest, res: VercelResponse) {
+    if (req.method === 'GET') {
+        res.status(200).json({
+            status: 'ok',
+            endpoints: {
+                search: '/api/search',
+                query: '/api/query',
+                annotations: '/api/annotations',
+                health: '/api/health'
+            }
+        });
+    } else {
+        res.status(405).json({ error: 'Method not allowed' });
+    }
+}
 
 // Add a specific handler for the /api route
 export const config = {
