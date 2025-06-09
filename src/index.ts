@@ -5,7 +5,6 @@ import { exchangeRoutes } from './routes/exchange.routes';
 import { startDataFetcher, getCachedData } from './services/dataFetcherService';
 
 const app = express();
-const PORT = config.port || 8080;
 
 // Middleware
 app.use(cors({
@@ -137,7 +136,8 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 // Initialize data fetchers and WebSocket connections
 startDataFetcher().catch(error => {
     console.error('Failed to start data fetcher:', error);
-    process.exit(1);
+    // Don't exit process in serverless environment
+    // process.exit(1);
 });
 
 // // Start server
