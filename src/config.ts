@@ -9,7 +9,7 @@ export const config = {
                 baseUrl: 'https://api.binance.com'
             },
             portfolioMargin: {
-                // Binance 2 (Portfolio Margin Account - USDM+CoinM futures - CrossMargin)
+                // Binance 2 (Portfolio Margin Account - USDM+CoinM futures)
                 apiKey: process.env.BINANCE_PM_API_KEY || 'aQIIhOsPnW0SQaVklY7J7jxNDxYkXWjfXiEUbUFA0ORSHkLm3mbJTEEPlftVKsVk',
                 apiSecret: process.env.BINANCE_PM_API_SECRET || 'y4WAEBBA3VMYOa3qeAkNUqOMqUr8MyEnhSfT2ZNhUXaGwkj1TSERlTfuHG96aY4J',
                 baseUrl: 'https://api.binance.com'
