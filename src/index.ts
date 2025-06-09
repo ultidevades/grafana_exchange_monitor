@@ -1,9 +1,12 @@
 import express, { RequestHandler } from 'express';
 import cors from 'cors';
+// import {config} from './config'
 import { exchangeRoutes } from './routes/exchange.routes';
 import { startDataFetcher, getCachedData } from './services/dataFetcherService';
 
 const app = express();
+// const PORT = config.port || 8080;
+
 
 // Middleware
 app.use(cors({
