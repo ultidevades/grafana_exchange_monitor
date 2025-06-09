@@ -13,6 +13,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "vercel": "^42.3.0",
     "websocket": "^1.0.35"
   },
   "devDependencies": {

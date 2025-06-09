@@ -136,11 +136,9 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 // Initialize data fetchers and WebSocket connections
 startDataFetcher().catch(error => {
     console.error('Failed to start data fetcher:', error);
-    // Don't exit process in serverless environment
-    // process.exit(1);
 });
 
-// For local development only
+// For local development
 if (process.env.NODE_ENV !== 'production') {
     const PORT = config.port || 8080;
     app.listen(PORT, () => {
