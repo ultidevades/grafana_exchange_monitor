@@ -1,18 +1,15 @@
 import { BinanceClient, BinanceAccountType } from '../exchanges/binance.client';
-// import { BybitClient } from '../exchanges/bybit.client';
+import { BybitClient } from '../exchanges/bybit.client';
 // import { WebSocketService } from './websocketService';
 import { CombinedData, ExchangeData } from '../models/position.model';
 import { config } from '../config';
 
 // Store exchange clients
-// const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient | BybitClient } } = {
-//     binance: {},
-//     bybit: {}
-// };
-
-const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient} } = {
+const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient | BybitClient } } = {
     binance: {},
+    bybit: {}
 };
+
 
 // Initialize WebSocket service
 // const wsService = new WebSocketService();
@@ -21,29 +18,27 @@ const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient} } 
 let cachedData: CombinedData = {
     exchanges: {
         binance: {},
-        // bybit: {},
+        bybit: {},
     },
     currentExchange: 'binance',
     currentAccount: 'futures',
-    // availableExchanges: ['binance', 'bybit'],
-    availableExchanges: ['binance'],
-
+    availableExchanges: ['binance', 'bybit'],
     availableAccounts: {
         binance: ['futures', 'portfolioMargin'],
-        // bybit: ['unified'],
+        bybit: ['unified'],
     },
 };
 
 // Last successful fetch timestamps
 const lastFetchTimes: { [exchange: string]: { [accountId: string]: number } } = {
     binance: {},
-    // bybit: {},
+    bybit: {},
 };
 
 // Error counters
 const errorCounts: { [exchange: string]: { [accountId: string]: number } } = {
     binance: {},
-    // bybit: {},
+    bybit: {},
 };
 
 // Maximum consecutive errors before backing off
@@ -53,7 +48,7 @@ const INITIAL_BACKOFF = 60000;
 // Backoff times for each exchange and account
 const backoffTimes: { [exchange: string]: { [accountId: string]: number } } = {
     binance: {},
-    // bybit: {},
+    bybit: {},
 };
 
 // Set up WebSocket event handlers
@@ -109,10 +104,10 @@ export async function initializeExchangeClients(): Promise<void> {
         await binancePMClient.initialize();
         exchangeClients.binance['portfolioMargin'] = binancePMClient;
 
-        // // Initialize Bybit Unified client
-        // const bybitClient = new BybitClient();
-        // await bybitClient.initialize();
-        // exchangeClients.bybit['unified'] = bybitClient;
+        // Initialize Bybit Unified client
+        const bybitClient = new BybitClient();
+        await bybitClient.initialize();
+        exchangeClients.bybit['unified'] = bybitClient;
 
         console.log('All exchange clients initialized successfully');
     } catch (error) {
