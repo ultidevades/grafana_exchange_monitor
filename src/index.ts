@@ -23,7 +23,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Grafana JSON data source endpoints
+// Root endpoint
 app.get('/', (req, res) => {
     res.status(200).json({ status: 'ok' });
 });
@@ -119,7 +119,7 @@ app.post('/variable', ((req, res) => {
     res.status(400).json({ error: 'Unknown variable target' });
 }) as RequestHandler);
 
-// Routes
+// Mount API routes
 app.use('/api', exchangeRoutes);
 
 // Health check endpoint
@@ -140,11 +140,14 @@ startDataFetcher().catch(error => {
     // process.exit(1);
 });
 
-// // Start server
-// app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`);
-//     console.log(`Health check: http://localhost:${PORT}/health`);
-//     console.log(`API endpoints: http://localhost:${PORT}/api`);
-// });
+// For local development only
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = config.port || 8080;
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+        console.log(`Health check: http://localhost:${PORT}/health`);
+        console.log(`API endpoints: http://localhost:${PORT}/api`);
+    });
+}
 
 export default app;
