@@ -135,10 +135,10 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
     res.status(500).json({ error: 'Internal Server Error' });
 });
 
-// Initialize data fetchers and WebSocket connections
-startDataFetcher().catch(error => {
-    console.error('Failed to start data fetcher:', error);
-});
+// // Initialize data fetchers and WebSocket connections
+// startDataFetcher().catch(error => {
+//     console.error('Failed to start data fetcher:', error);
+// });
 
 // // Start server
 // app.listen(PORT, () => {
