@@ -2,7 +2,6 @@ import { BinanceClient, BinanceAccountType } from '../exchanges/binance.client';
 import { BybitClient } from '../exchanges/bybit.client';
 // import { WebSocketService } from './websocketService';
 import { CombinedData, ExchangeData } from '../models/position.model';
-import { config } from '../config';
 
 // Store exchange clients
 const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient | BybitClient } } = {
