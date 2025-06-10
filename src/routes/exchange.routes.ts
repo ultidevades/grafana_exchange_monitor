@@ -51,28 +51,50 @@ router.post('/query', ((req: Request, res: Response) => {
 
     const data = getCachedData();
     const results = targets.map((target: any) => {
-        let value;
-        switch (target.target) {
-            case 'positions':
-                value = data.exchanges[data.currentExchange]?.[data.currentAccount]?.positions || [];
-                break;
-            case 'account_summary':
-                value = data.exchanges[data.currentExchange]?.[data.currentAccount]?.accountSummary || {};
-                break;
-            case 'available_exchanges':
-                value = data.availableExchanges || [];
-                break;
-            case 'health_status':
-                value = getHealthStatus();
-                break;
-            default:
-                value = null;
+        if (target.target === 'positions') {
+            const exchange = target.exchange || data.currentExchange;
+            const account = target.account || data.currentAccount;
+            const positions = data.exchanges[exchange]?.[account]?.positions || [];
+
+            return {
+                columns: [
+                    { text: 'symbol' },
+                    { text: 'side' },
+                    { text: 'size' },
+                    { text: 'notionalValue' },
+                    { text: 'entryPrice' },
+                    { text: 'markPrice' },
+                    { text: 'liquidationPrice' },
+                    { text: 'liquidationPriceChangePercent' },
+                    { text: 'currentFundingRate' },
+                    { text: 'nextFundingRate' },
+                    { text: 'leverage' },
+                    { text: 'unrealizedPnl' },
+                    { text: 'realizedPnl' },
+                    { text: 'marginMode' }
+                ],
+                rows: positions.map(pos => [
+                    pos.symbol,
+                    pos.side,
+                    pos.size,
+                    pos.notionalValue,
+                    pos.entryPrice,
+                    pos.markPrice,
+                    pos.liquidationPrice,
+                    pos.liquidationPriceChangePercent,
+                    pos.currentFundingRate,
+                    pos.nextFundingRate,
+                    pos.leverage,
+                    pos.unrealizedPnl,
+                    pos.realizedPnl,
+                    pos.marginMode
+                ]),
+                type: 'table'
+            };
         }
-        return {
-            target: target.target,
-            datapoints: [[value, Date.now()]]
-        };
-    });
+        return null;
+    }).filter(Boolean);
+
     res.json(results);
 }) as RequestHandler);
 
@@ -191,27 +213,6 @@ router.get('/accounts/:exchange', ((req: Request, res: Response) => {
         accounts: data.availableAccounts[exchange],
         currentAccount: data.currentAccount
     });
-}) as RequestHandler);
-
-router.post('/query', ((req: Request, res: Response) => {
-    const { targets } = req.body;
-    const data = getCachedData();
-
-    const results = targets.map((target: any) => {
-        if (target.target === 'positions') {
-            const exchange = target.exchange;
-            const account = target.account;
-            // Fetch open positions for the selected exchange and account
-            const positions = data.exchanges[exchange]?.[account]?.positions || [];
-            return {
-                target: 'positions',
-                datapoints: positions // or format as needed for Grafana table
-            };
-        }
-        // ... handle other targets
-    });
-
-    res.json(results);
 }) as RequestHandler);
 
 export const exchangeRoutes = router;
