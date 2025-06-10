@@ -10,7 +10,7 @@ const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient | B
 };
 
 
-// Initialize WebSocket service
+// // Initialize WebSocket service
 // const wsService = new WebSocketService();
 
 // In-memory cache
@@ -50,7 +50,7 @@ const backoffTimes: { [exchange: string]: { [accountId: string]: number } } = {
     bybit: {},
 };
 
-// Set up WebSocket event handlers
+// // Set up WebSocket event handlers
 // wsService.on('binance:accountUpdate', (data) => {
 //     const accountId = data.accountType === 'futures' ? 'futures' : 'portfolioMargin';
 //     if (cachedData.exchanges.binance[accountId]) {
@@ -228,7 +228,7 @@ export async function startDataFetcher(): Promise<void> {
     // Log initial metrics
     logAccountMetrics(cachedData);
 
-    // Connect WebSocket for real-time updates
+    // // Connect WebSocket for real-time updates
     // await wsService.connect();
 
     // Set up periodic metrics logging
@@ -237,7 +237,7 @@ export async function startDataFetcher(): Promise<void> {
     }, 60000); // Log metrics every minute
 }
 
-// Stop the data fetching service
+// // Stop the data fetching service
 // export function stopDataFetcher(): void {
 //     wsService.close();
 // }
