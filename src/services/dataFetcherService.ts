@@ -1,6 +1,6 @@
 import { BinanceClient, BinanceAccountType } from '../exchanges/binance.client';
 import { BybitClient } from '../exchanges/bybit.client';
-// import { WebSocketService } from './websocketService';
+import { WebSocketService } from './websocketService';
 import { CombinedData, ExchangeData } from '../models/position.model';
 
 // Store exchange clients
@@ -11,7 +11,7 @@ const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient | B
 
 
 // Initialize WebSocket service
-// const wsService = new WebSocketService();
+const wsService = new WebSocketService();
 
 // In-memory cache
 let cachedData: CombinedData = {
@@ -51,44 +51,44 @@ const backoffTimes: { [exchange: string]: { [accountId: string]: number } } = {
 };
 
 // Set up WebSocket event handlers
-// wsService.on('binance:accountUpdate', (data) => {
-//     const accountId = data.accountType === 'futures' ? 'futures' : 'portfolioMargin';
-//     if (cachedData.exchanges.binance[accountId]) {
-//         // Update positions and balances
-//         const currentData = cachedData.exchanges.binance[accountId];
-//         currentData.positions = data.positions;
-//         currentData.accountSummary.baseBalance = data.balances.find((b: any) => b.a === 'USDT')?.wb || 0;
-//         lastFetchTimes.binance[accountId] = Date.now();
-//     }
-// });
+wsService.on('binance:accountUpdate', (data) => {
+    const accountId = data.accountType === 'futures' ? 'futures' : 'portfolioMargin';
+    if (cachedData.exchanges.binance[accountId]) {
+        // Update positions and balances
+        const currentData = cachedData.exchanges.binance[accountId];
+        currentData.positions = data.positions;
+        currentData.accountSummary.baseBalance = data.balances.find((b: any) => b.a === 'USDT')?.wb || 0;
+        lastFetchTimes.binance[accountId] = Date.now();
+    }
+});
 
-// wsService.on('binance:orderUpdate', (data) => {
-//     const accountId = data.accountType === 'futures' ? 'futures' : 'portfolioMargin';
-//     if (cachedData.exchanges.binance[accountId]) {
-//         // Update order information
-//         const currentData = cachedData.exchanges.binance[accountId];
-//         // Update orders based on the received data
-//         lastFetchTimes.binance[accountId] = Date.now();
-//     }
-// });
+wsService.on('binance:orderUpdate', (data) => {
+    const accountId = data.accountType === 'futures' ? 'futures' : 'portfolioMargin';
+    if (cachedData.exchanges.binance[accountId]) {
+        // Update order information
+        const currentData = cachedData.exchanges.binance[accountId];
+        // Update orders based on the received data
+        lastFetchTimes.binance[accountId] = Date.now();
+    }
+});
 
-// wsService.on('bybit:positionUpdate', (data) => {
-//     if (cachedData.exchanges.bybit['unified']) {
-//         // Update positions
-//         const currentData = cachedData.exchanges.bybit['unified'];
-//         currentData.positions = data.positions;
-//         lastFetchTimes.bybit['unified'] = Date.now();
-//     }
-// });
+wsService.on('bybit:positionUpdate', (data) => {
+    if (cachedData.exchanges.bybit['unified']) {
+        // Update positions
+        const currentData = cachedData.exchanges.bybit['unified'];
+        currentData.positions = data.positions;
+        lastFetchTimes.bybit['unified'] = Date.now();
+    }
+});
 
-// wsService.on('bybit:orderUpdate', (data) => {
-//     if (cachedData.exchanges.bybit['unified']) {
-//         // Update order information
-//         const currentData = cachedData.exchanges.bybit['unified'];
-//         // Update orders based on the received data
-//         lastFetchTimes.bybit['unified'] = Date.now();
-//     }
-// });
+wsService.on('bybit:orderUpdate', (data) => {
+    if (cachedData.exchanges.bybit['unified']) {
+        // Update order information
+        const currentData = cachedData.exchanges.bybit['unified'];
+        // Update orders based on the received data
+        lastFetchTimes.bybit['unified'] = Date.now();
+    }
+});
 
 // Initialize exchange clients
 export async function initializeExchangeClients(): Promise<void> {
@@ -229,7 +229,7 @@ export async function startDataFetcher(): Promise<void> {
     logAccountMetrics(cachedData);
 
     // Connect WebSocket for real-time updates
-    // await wsService.connect();
+    await wsService.connect();
 
     // Set up periodic metrics logging
     setInterval(() => {
@@ -238,9 +238,9 @@ export async function startDataFetcher(): Promise<void> {
 }
 
 // Stop the data fetching service
-// export function stopDataFetcher(): void {
-//     wsService.close();
-// }
+export function stopDataFetcher(): void {
+    wsService.close();
+}
 
 // Get the current cached data
 export function getCachedData(): CombinedData {
