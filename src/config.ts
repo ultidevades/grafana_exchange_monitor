@@ -16,7 +16,7 @@ export const config = {
             }
         },
         bybit: {
-            // Bybit 1 (Unified Margin + Futures)
+            // // Bybit 1 (Unified Margin + Futures)
             apiKey: process.env.BYBIT_API_KEY || 'gkdkqHsxgQ6t1gj5PV',
             apiSecret: process.env.BYBIT_API_SECRET || 'jidIU3oOLYZltaga06F6wD20t07h9jwOxjrV',
             baseUrl: process.env.BYBIT_BASE_URL || 'https://api.bybit.com'
