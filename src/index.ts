@@ -1,11 +1,11 @@
 import express, { RequestHandler } from 'express';
 import cors from 'cors';
-// import {config} from './config'
+import {config} from './config'
 import { exchangeRoutes } from './routes/exchange.routes';
 import { startDataFetcher, getCachedData } from './services/dataFetcherService';
 
 const app = express();
-// const PORT = config.port || 8080;
+const PORT = config.port || 8080;
 
 
 // Middleware
@@ -140,14 +140,11 @@ startDataFetcher().catch(error => {
     console.error('Failed to start data fetcher:', error);
 });
 
-// // For local development
-// if (process.env.NODE_ENV !== 'production') {
-//     const PORT = config.port || 8080;
-//     app.listen(PORT, () => {
-//         console.log(`Server running on port ${PORT}`);
-//         console.log(`Health check: http://localhost:${PORT}/health`);
-//         console.log(`API endpoints: http://localhost:${PORT}/api`);
-//     });
-// }
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Health check: http://localhost:${PORT}/health`);
+    console.log(`API endpoints: http://localhost:${PORT}/api`);
+});
 
 export default app;
