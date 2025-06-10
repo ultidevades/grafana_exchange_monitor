@@ -2,7 +2,6 @@ import { BinanceClient, BinanceAccountType } from '../exchanges/binance.client';
 import { BybitClient } from '../exchanges/bybit.client';
 // import { WebSocketService } from './websocketService';
 import { CombinedData, ExchangeData } from '../models/position.model';
-import { config } from '../config';
 
 // Store exchange clients
 const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient | BybitClient } } = {
@@ -10,6 +9,9 @@ const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient | B
     bybit: {}
 };
 
+// const exchangeClients: { [key: string]: { [accountId: string]: BinanceClient } } = {
+//     binance: {},
+// };
 
 // Initialize WebSocket service
 // const wsService = new WebSocketService();
@@ -23,6 +25,8 @@ let cachedData: CombinedData = {
     currentExchange: 'binance',
     currentAccount: 'futures',
     availableExchanges: ['binance', 'bybit'],
+    // availableExchanges: ['binance'],
+
     availableAccounts: {
         binance: ['futures', 'portfolioMargin'],
         bybit: ['unified'],
